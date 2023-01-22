@@ -33,4 +33,13 @@ public class ModeloFuncionario {
             return new Funcionario(id, nome, dataNascimento, salario, funcao);
         }
     }
+    public void deletaFuncionarioPorNome(String nome) throws SQLException {
+        try (PreparedStatement comando = conexao.prepareStatement(
+                "DELETE FROM Funcionario WHERE nome = ?"
+        )
+        ) {
+            comando.setString(1, nome);
+            comando.executeUpdate();
+        }
+    }
 }

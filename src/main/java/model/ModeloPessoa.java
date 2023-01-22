@@ -28,6 +28,15 @@ public class ModeloPessoa {
             return new Pessoa(id, nome, dataNascimento);
         }
     }
+    public void deletaPessoaPorNome(String nome) throws SQLException {
+        try (PreparedStatement comando = conexao.prepareStatement(
+                "DELETE FROM Pessoa WHERE nome = ?"
+        )
+        ) {
+            comando.setString(1, nome);
+            comando.executeUpdate();
+        }
+    }
     public Connection getConexao() {
         return conexao;
     }

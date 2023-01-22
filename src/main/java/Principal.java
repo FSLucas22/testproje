@@ -22,6 +22,9 @@ public class Principal {
             var modelo = new ModeloFuncionario(conexao);
             insereFuncionarios(modelo);
 
+            // Deleta o funcionário João
+            modelo.deletaFuncionarioPorNome("João");
+
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Um erro ocorreu: ");
             System.out.println(e.getMessage());
