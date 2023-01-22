@@ -1,6 +1,10 @@
+package entities;
+
+import entities.Entity;
+
 import java.time.LocalDate;
 
-public class Pessoa implements Entity{
+public class Pessoa implements Entity {
     private int id;
     private String nome;
     private LocalDate dataNascimento;
