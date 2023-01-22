@@ -1,7 +1,5 @@
 import model.Conector;
-import model.Modelo;
-import model.entities.*;
-
+import model.ModeloFuncionario;
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,8 +19,7 @@ public class Principal {
                 senha
         )){
             // Cria o model para lidar com o banco
-            var modelo = new Modelo(conexao);
-
+            var modelo = new ModeloFuncionario(conexao);
             insereFuncionarios(modelo);
 
         } catch (ClassNotFoundException | SQLException e) {
@@ -30,7 +27,7 @@ public class Principal {
             System.out.println(e.getMessage());
         }
     }
-    public static void insereFuncionarios(Modelo modelo) throws SQLException {
+    public static void insereFuncionarios(ModeloFuncionario modelo) throws SQLException {
         modelo.criaFuncionario("Maria", LocalDate.parse("18/10/2000", formatHora),
                 BigDecimal.valueOf(2009.44), "Operador");
         modelo.criaFuncionario("João", LocalDate.parse("12/05/1990", formatHora),

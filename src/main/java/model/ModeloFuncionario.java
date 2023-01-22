@@ -4,32 +4,19 @@ import model.entities.Funcionario;
 import model.entities.Pessoa;
 
 import java.math.BigDecimal;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 
-public class Modelo {
+public class ModeloFuncionario {
     private Connection conexao;
-    public Modelo(Connection conexao) {
+    public ModeloFuncionario(Connection conexao) {
         this.conexao = conexao;
     }
-    public Pessoa criaPessoa(String nome, LocalDate dataNascimento) throws SQLException {
-        String [] toReturn = {"id"};
-        try (PreparedStatement comando = conexao.prepareStatement(
-                "INSERT INTO Pessoa(nome, data_nascimento) VALUES (?, ?)",
-                toReturn
-        )
-        ) {
-            comando.setString(1, nome);
-            comando.setObject(2, dataNascimento);
-            comando.executeUpdate();
-            ResultSet campos_gerados = comando.getGeneratedKeys();
-            campos_gerados.next();
-            int id = campos_gerados.getInt(1);
-            return new Pessoa(id, nome, dataNascimento);
-        }
-    }
     public Funcionario criaFuncionario(String nome, LocalDate dataNascimento, BigDecimal salario, String funcao) throws SQLException {
-        String [] toReturn = {"id"};
+        String[] toReturn = {"id"};
         try (PreparedStatement comando = conexao.prepareStatement(
                 "INSERT INTO Funcionario(nome, data_nascimento, salario, funcao) VALUES (?, ?, ?, ?)",
                 toReturn
@@ -45,9 +32,5 @@ public class Modelo {
             int id = campos_gerados.getInt(1);
             return new Funcionario(id, nome, dataNascimento, salario, funcao);
         }
-    }
-
-    public Connection getConexao() {
-        return conexao;
     }
 }
