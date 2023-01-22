@@ -25,9 +25,13 @@ public class Pessoa implements Entity {
     public void setDataNascimento(LocalDate dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
-
     @Override
     public int getId() {
         return id;
+    }
+    public String toString() {
+        return "Pessoa(" +
+                "nome=" + nome + "," +
+                "dataNascimento=" + dataNascimento.toString() + ")";
     }
 }
