@@ -1,3 +1,4 @@
+import controller.ControladorFuncionario;
 import model.Conector;
 import model.ModeloFuncionario;
 import model.entities.Funcionario;
@@ -23,19 +24,22 @@ public class Principal {
                 nomeUsuario,
                 senha
         )){
-            // Cria o model para lidar com o banco
+            // Cria o controlador para lidar com o banco
             var modelo = new ModeloFuncionario(conexao);
             var visualizador = new VisualizadorFuncionario();
-            insereFuncionarios(modelo);
+            var controlador = new ControladorFuncionario(modelo, visualizador);
+
+            // Insere os funcionários na ordem da tabela
+            insereFuncionarios(controlador);
 
             // Deleta o funcionário João
             modelo.deletaFuncionarioPorNome("João");
 
             // Mostra todas as informações de todos os funcionários
-            visualizador.listaFuncionarios(modelo.listaFuncionarios());
+            controlador.listaFuncionarios();
 
             // Atualiza o salário de todos os funcionários em 10%
-            atualizaSalarioDeTodos(modelo);
+            controlador.atualizaSalarioDeTodos(10);
 
             // Mostra a lista com os salários atualizados
             visualizador.listaFuncionarios(modelo.listaFuncionarios());
@@ -45,37 +49,26 @@ public class Principal {
             System.out.println(e.getMessage());
         }
     }
-    public static void insereFuncionarios(ModeloFuncionario modelo) throws SQLException {
-        modelo.cadastraFuncionario("Maria", LocalDate.parse("18/10/2000", formatData),
+    public static void insereFuncionarios(ControladorFuncionario controlador) throws SQLException {
+        controlador.cadastraFuncionario("Maria", LocalDate.parse("18/10/2000", formatData),
                 BigDecimal.valueOf(2009.44), "Operador");
-        modelo.cadastraFuncionario("João", LocalDate.parse("12/05/1990", formatData),
+        controlador.cadastraFuncionario("João", LocalDate.parse("12/05/1990", formatData),
                 BigDecimal.valueOf(2284.38), "Operador");
-        modelo.cadastraFuncionario("Caio", LocalDate.parse("02/05/1961", formatData),
+        controlador.cadastraFuncionario("Caio", LocalDate.parse("02/05/1961", formatData),
                 BigDecimal.valueOf(9836.14), "Coordenador");
-        modelo.cadastraFuncionario("Miguel", LocalDate.parse("14/10/1988", formatData),
+        controlador.cadastraFuncionario("Miguel", LocalDate.parse("14/10/1988", formatData),
                 BigDecimal.valueOf(19119.88), "Diretor");
-        modelo.cadastraFuncionario("Alice", LocalDate.parse("05/01/1995", formatData),
+        controlador.cadastraFuncionario("Alice", LocalDate.parse("05/01/1995", formatData),
                 BigDecimal.valueOf(2234.68), "Recepcionista");
-        modelo.cadastraFuncionario("Heitor", LocalDate.parse("19/11/1999", formatData),
+        controlador.cadastraFuncionario("Heitor", LocalDate.parse("19/11/1999", formatData),
                 BigDecimal.valueOf(1582.72), "Operador");
-        modelo.cadastraFuncionario("Arthur", LocalDate.parse("31/03/1993", formatData),
+        controlador.cadastraFuncionario("Arthur", LocalDate.parse("31/03/1993", formatData),
                 BigDecimal.valueOf(4071.84), "Contador");
-        modelo.cadastraFuncionario("Laura", LocalDate.parse("08/07/1994", formatData),
+        controlador.cadastraFuncionario("Laura", LocalDate.parse("08/07/1994", formatData),
                 BigDecimal.valueOf(3017.45), "Gerente");
-        modelo.cadastraFuncionario("Heloísa", LocalDate.parse("24/05/2003", formatData),
+        controlador.cadastraFuncionario("Heloísa", LocalDate.parse("24/05/2003", formatData),
                 BigDecimal.valueOf(1606.85), "Eletricista");
-        modelo.cadastraFuncionario("Helena", LocalDate.parse("02/09/1996", formatData),
+        controlador.cadastraFuncionario("Helena", LocalDate.parse("02/09/1996", formatData),
                 BigDecimal.valueOf(2799.93), "Gerente");
-    }
-    public static BigDecimal calculaSalarioComAumento(BigDecimal salario, double porcentagemAumento) {
-        return salario.add(salario.multiply(new BigDecimal(porcentagemAumento / 100)));
-    }
-    public static void atualizaSalarioDeTodos(ModeloFuncionario modelo) throws SQLException {
-        var funcionarios = modelo.listaFuncionarios();
-        for (Funcionario funcionario : funcionarios) {
-            var novoSalario = calculaSalarioComAumento(funcionario.getSalario(), 10);
-            funcionario.setSalario(novoSalario);
-        }
-        modelo.atualizaFuncionarios(funcionarios);
     }
 }
