@@ -59,4 +59,9 @@ public class ControladorFuncionario {
         visualizador.listaFuncionariosPorNome(funcionarios);
         return funcionarios;
     }
+    public BigDecimal retornaTotalSalarios() throws SQLException {
+        var total = modelo.retornaTotalSalarios();
+        visualizador.retornaTotalSalarios(total);
+        return total;
+    }
 }

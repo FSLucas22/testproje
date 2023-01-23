@@ -121,4 +121,12 @@ public class ModeloFuncionario {
             return listaFuncionarios();
         }
     }
+    public BigDecimal retornaTotalSalarios() throws SQLException {
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT SUM(salario) FROM Funcionario"
+        );
+        resultadoQuery.next();
+        return resultadoQuery.getBigDecimal(1);
+    }
 }

@@ -44,8 +44,17 @@ public class Principal {
             // Exibe os funcionários agrupados por função
             controlador.agrupaFuncionariosPorFuncao();
 
+            // @TODO 3.8 – Imprimir os funcionários que fazem aniversário no mês 10 e 12.
+
+            // @TODO 3.9 – Imprimir o funcionário com a maior idade, exibir os atributos: nome e idade.
+
             // Exibe os funcionários em ordem alfabética
             controlador.listaFuncionariosPorNome();
+
+            // Exibe o total dos salários dos funcionários
+            controlador.retornaTotalSalarios();
+
+            // @TODO 3.12 – Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.
 
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Um erro ocorreu: ");

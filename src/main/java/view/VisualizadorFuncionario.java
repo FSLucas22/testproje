@@ -2,6 +2,7 @@ package view;
 
 import model.entities.Funcionario;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -67,5 +68,9 @@ public class VisualizadorFuncionario extends Visualizador {
     public void listaFuncionariosPorNome(List<Funcionario> funcionarios) {
         System.out.println("Exibindo funcionários em ordem alfabética...");
         listaFuncionarios(funcionarios);
+    }
+    public void retornaTotalSalarios(BigDecimal total) {
+        System.out.println("Exibindo o salário total de todos os funcionários...");
+        System.out.println("Total: " + "R$" + formataSalario(total));
     }
 }
