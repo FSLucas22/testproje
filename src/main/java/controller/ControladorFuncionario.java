@@ -54,4 +54,9 @@ public class ControladorFuncionario {
         visualizador.agrupaFuncionariosPorFuncao(grupos);
         return grupos;
     }
+    public List<Funcionario> listaFuncionariosPorNome() throws SQLException {
+        var funcionarios = modelo.listaFuncionariosPorNome();
+        visualizador.listaFuncionariosPorNome(funcionarios);
+        return funcionarios;
+    }
 }

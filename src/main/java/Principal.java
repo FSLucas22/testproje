@@ -41,8 +41,11 @@ public class Principal {
             // Atualiza o salário de todos os funcionários em 10% e mostra a lista com os novos salários
             controlador.atualizaSalarioDeTodos(10);
 
-            // Exibe funcionários agrupados por função
+            // Exibe os funcionários agrupados por função
             controlador.agrupaFuncionariosPorFuncao();
+
+            // Exibe os funcionários em ordem alfabética
+            controlador.listaFuncionariosPorNome();
 
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Um erro ocorreu: ");

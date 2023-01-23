@@ -63,4 +63,9 @@ public class VisualizadorFuncionario extends Visualizador {
         var funcao = funcionario.getFuncao();
         return criaStringEspacada(nome, dataNascimento, salario, funcao);
     }
+
+    public void listaFuncionariosPorNome(List<Funcionario> funcionarios) {
+        System.out.println("Exibindo funcionários em ordem alfabética...");
+        listaFuncionarios(funcionarios);
+    }
 }

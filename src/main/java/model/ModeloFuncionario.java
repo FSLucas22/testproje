@@ -82,6 +82,13 @@ public class ModeloFuncionario {
         }
         return grupos;
     }
+    public List<Funcionario> listaFuncionariosPorNome() throws SQLException {
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT * FROM Funcionario ORDER BY nome"
+        );
+        return criaFuncionariosPorResultSet(resultadoQuery);
+    }
     public Funcionario atualizaFuncionario(Funcionario funcionario) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
                 "UPDATE Funcionario SET nome=?, data_nascimento=?, salario=?, funcao=? WHERE id = ?"
