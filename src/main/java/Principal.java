@@ -44,7 +44,8 @@ public class Principal {
             // Exibe os funcionários agrupados por função
             controlador.agrupaFuncionariosPorFuncao();
 
-            // @TODO 3.8 – Imprimir os funcionários que fazem aniversário no mês 10 e 12.
+            // Exibe os funcionários que fazem aniversário nos meses 10 e 12
+            controlador.aniversariantesDosMeses(10, 12);
 
             // @TODO 3.9 – Imprimir o funcionário com a maior idade, exibir os atributos: nome e idade.
 

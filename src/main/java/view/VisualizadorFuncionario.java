@@ -79,6 +79,14 @@ public class VisualizadorFuncionario extends Visualizador {
         });
         System.out.println();
     }
+    public void aniversariantesDosMeses(List<Funcionario> aniversariantes, int ... meses) {
+        StringBuilder mesesConsiderados = new StringBuilder();
+        for (int i=0; i<meses.length; i++) {
+            mesesConsiderados.append(meses[i]).append((i == meses.length - 1)? "" : ", ");
+        }
+        System.out.println("Exibindo os aniversariantes dos meses: " + mesesConsiderados.toString());
+        listaFuncionarios(aniversariantes);
+    }
     public String criaStringEspacadaDeFuncionario(Funcionario funcionario) {
         var nome = funcionario.getNome();
         var dataNascimento = formataData(funcionario.getDataNascimento());

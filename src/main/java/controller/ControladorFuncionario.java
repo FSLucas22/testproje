@@ -69,4 +69,9 @@ public class ControladorFuncionario {
         visualizador.salariosMinimos(salarioMinimo, relacao);
         return relacao;
     }
+    public List<Funcionario> aniversariantesDosMeses(int ... meses) throws SQLException {
+        var aniversariantes = modelo.aniversariantesDosMeses(meses);
+        visualizador.aniversariantesDosMeses(aniversariantes, meses);
+        return aniversariantes;
+    }
 }

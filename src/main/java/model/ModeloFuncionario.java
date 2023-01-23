@@ -142,4 +142,15 @@ public class ModeloFuncionario {
         }
         return relacaoNomeSalarioMinimo;
     }
+    public List<Funcionario> aniversariantesDosMeses(int ... meses) throws SQLException {
+        StringBuilder query = new StringBuilder("SELECT * FROM Funcionario WHERE EXTRACT(MONTH FROM data_nascimento) in (");
+        for (int i=0; i<meses.length; i++) {
+            query.append(meses[i]).append((i == meses.length - 1) ? ")" : ",");
+        }
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                query.toString()
+        );
+        return criaFuncionariosPorResultSet(resultadoQuery);
+    }
 }
