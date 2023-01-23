@@ -54,6 +54,24 @@ public class ModeloPessoa {
         }
         return pessoas;
     }
+    public Pessoa atualizaPessoa(Pessoa pessoa) throws SQLException {
+        try (PreparedStatement comando = conexao.prepareStatement(
+                "UPDATE Pessoa SET nome=?, data_nascimento=? WHERE id = ?"
+        )
+        ) {
+            comando.setString(1, pessoa.getNome());
+            comando.setObject(2, pessoa.getDataNascimento());
+            comando.setInt(3, pessoa.getId());
+            comando.executeUpdate();
+            return pessoa;
+        }
+    }
+    public List<Pessoa> atualizaPessoas(List<Pessoa> pessoas) throws SQLException {
+        for (Pessoa pessoa : pessoas) {
+            atualizaPessoa(pessoa);
+        }
+        return pessoas;
+    }
     public Connection getConexao() {
         return conexao;
     }
