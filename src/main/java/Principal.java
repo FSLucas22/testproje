@@ -1,10 +1,13 @@
 import model.Conector;
 import model.ModeloFuncionario;
+import model.entities.Funcionario;
+
 import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 public class Principal {
     private static final DateTimeFormatter formatHora = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -24,6 +27,9 @@ public class Principal {
 
             // Deleta o funcionário João
             modelo.deletaFuncionarioPorNome("João");
+
+            // Mostra todas as informações de todos os funcionários
+            imprimeFuncionarios(modelo);
 
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Um erro ocorreu: ");
@@ -51,5 +57,9 @@ public class Principal {
                 BigDecimal.valueOf(1606.85), "Eletricista");
         modelo.criaFuncionario("Helena", LocalDate.parse("02/09/1996", formatHora),
                 BigDecimal.valueOf(2799.93), "Gerente");
+    }
+    public static void imprimeFuncionarios(ModeloFuncionario modelo) throws SQLException {
+        List<Funcionario> funcionarios = modelo.listaFuncionarios();
+        funcionarios.forEach(System.out::println);
     }
 }

@@ -6,6 +6,8 @@ import model.entities.Pessoa;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModeloPessoa {
     private Connection conexao;
@@ -36,6 +38,21 @@ public class ModeloPessoa {
             comando.setString(1, nome);
             comando.executeUpdate();
         }
+    }
+    public List<Pessoa> listaPessoas() throws SQLException{
+        List<Pessoa> pessoas = new ArrayList<>();
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT * FROM Pessoa"
+        );
+        while (resultadoQuery.next()) {
+            int id = resultadoQuery.getInt("id");
+            String nome = resultadoQuery.getString("nome");
+            LocalDate dataNascimento = resultadoQuery.getObject("data_nascimento", LocalDate.class);
+            Pessoa pessoa = new Pessoa(id, nome, dataNascimento);
+            pessoas.add(pessoa);
+        }
+        return pessoas;
     }
     public Connection getConexao() {
         return conexao;
