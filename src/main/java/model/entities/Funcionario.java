@@ -26,7 +26,7 @@ public class Funcionario extends Pessoa {
         this.funcao = funcao;
     }
     public String toString() {
-        return "Funcionario" +
+        return "Funcionario(" +
                 "nome=" + getNome() + "," +
                 "dataNascimento=" + getDataNascimento().toString() + "," +
                 "salario=" + salario + "," +
