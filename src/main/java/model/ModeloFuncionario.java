@@ -59,4 +59,24 @@ public class ModeloFuncionario {
         }
         return funcionarios;
     }
+    public Funcionario atualizaFuncionario(Funcionario funcionario) throws SQLException {
+        try (PreparedStatement comando = conexao.prepareStatement(
+                "UPDATE Funcionario SET nome=?, data_nascimento=?, salario=?, funcao=? WHERE id = ?"
+        )
+        ) {
+            comando.setString(1, funcionario.getNome());
+            comando.setObject(2, funcionario.getDataNascimento());
+            comando.setObject(3, funcionario.getSalario());
+            comando.setString(4, funcionario.getFuncao());
+            comando.setInt(5, funcionario.getId());
+            comando.executeUpdate();
+            return funcionario;
+        }
+    }
+    public List<Funcionario> atualizaFuncionarios(List<Funcionario> funcionarios) throws SQLException {
+        for (Funcionario funcionario : funcionarios) {
+            atualizaFuncionario(funcionario);
+        }
+        return funcionarios;
+    }
 }

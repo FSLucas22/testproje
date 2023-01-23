@@ -33,6 +33,13 @@ public class Principal {
 
             // Mostra todas as informações de todos os funcionários
             visualizador.listaFuncionarios(modelo.listaFuncionarios());
+
+            // Atualiza o salário de todos os funcionários em 10%
+            atualizaSalarioDeTodos(modelo);
+
+            // Mostra a lista com os salários atualizados
+            visualizador.listaFuncionarios(modelo.listaFuncionarios());
+
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Um erro ocorreu: ");
             System.out.println(e.getMessage());
@@ -60,8 +67,15 @@ public class Principal {
         modelo.cadastraFuncionario("Helena", LocalDate.parse("02/09/1996", formatData),
                 BigDecimal.valueOf(2799.93), "Gerente");
     }
-    public static void imprimeFuncionarios(ModeloFuncionario modelo) throws SQLException {
-        List<Funcionario> funcionarios = modelo.listaFuncionarios();
-        funcionarios.forEach(System.out::println);
+    public static BigDecimal calculaSalarioComAumento(BigDecimal salario, double porcentagemAumento) {
+        return salario.add(salario.multiply(new BigDecimal(porcentagemAumento / 100)));
+    }
+    public static void atualizaSalarioDeTodos(ModeloFuncionario modelo) throws SQLException {
+        var funcionarios = modelo.listaFuncionarios();
+        for (Funcionario funcionario : funcionarios) {
+            var novoSalario = calculaSalarioComAumento(funcionario.getSalario(), 10);
+            funcionario.setSalario(novoSalario);
+        }
+        modelo.atualizaFuncionarios(funcionarios);
     }
 }
