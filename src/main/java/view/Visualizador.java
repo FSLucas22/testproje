@@ -16,17 +16,18 @@ public class Visualizador {
         this.formatSalario = new DecimalFormat("#,##0.00");;
         this.formatData = DateTimeFormatter.ofPattern("dd/MM/yyyy");;
     }
-    public static String criaStringEspacada(int espaco, String ... campos) {
+    static String criaStringEspacada(int espaco, Object... campos) {
         StringBuilder resultado = new StringBuilder();
-        for (String campo : campos) {
-            resultado.append(String.format("%-" + espaco + "s", campo));
+        for (Object campo : campos) {
+            resultado.append(String.format("%-" + espaco + "s", campo.toString()));
             resultado.append(" ");
         }
         return resultado.toString();
     }
-    public static String criaStringEspacada(String ... campos) {
+    public static String criaStringEspacada(Object ... campos) {
         return criaStringEspacada(20, campos);
     }
+
     public String formataData (LocalDate data){
         return data.format(formatData);
     }

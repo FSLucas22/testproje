@@ -3,10 +3,15 @@ package view;
 import model.entities.Funcionario;
 
 import java.math.BigDecimal;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 public class VisualizadorFuncionario extends Visualizador {
     public VisualizadorFuncionario(DateTimeFormatter formatData, DecimalFormat formatSalario) {
@@ -86,6 +91,12 @@ public class VisualizadorFuncionario extends Visualizador {
         }
         System.out.println("Exibindo os aniversariantes dos meses: " + mesesConsiderados.toString());
         listaFuncionarios(aniversariantes);
+    }
+    public void retornaNomeIdadeFuncionarioMaisVelho(List<String> dados) throws SQLException {
+        System.out.println("Exibindo o nome e idade do funcionário mais velho...");
+        System.out.println("Nome: " + dados.get(0));
+        System.out.println("Idade: " + dados.get(1));
+        System.out.println();
     }
     public String criaStringEspacadaDeFuncionario(Funcionario funcionario) {
         var nome = funcionario.getNome();

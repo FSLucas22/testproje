@@ -6,6 +6,7 @@ import model.entities.Pessoa;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,12 +83,16 @@ public class ModeloFuncionario {
         }
         return grupos;
     }
-    public List<Funcionario> listaFuncionariosPorNome() throws SQLException {
+    public List<Funcionario> listaFuncionariosPorNome(Order order) throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
-                "SELECT * FROM Funcionario ORDER BY nome"
+                "SELECT * FROM Funcionario ORDER BY nome " + order
         );
         return criaFuncionariosPorResultSet(resultadoQuery);
+    }
+    public List<Funcionario> listaFuncionariosPorNome() throws SQLException {
+        Statement comando = conexao.createStatement();
+        return listaFuncionariosPorNome(Order.ASC);
     }
     public Funcionario atualizaFuncionario(Funcionario funcionario) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
@@ -152,5 +157,27 @@ public class ModeloFuncionario {
                 query.toString()
         );
         return criaFuncionariosPorResultSet(resultadoQuery);
+    }
+    public List<Funcionario> listaFuncionariosPorDataNascimento(Order order) throws SQLException {
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT * FROM Funcionario ORDER BY data_nascimento " + order
+        );
+        return criaFuncionariosPorResultSet(resultadoQuery);
+    }
+    public List<Funcionario> listaFuncionariosPorDataNascimento() throws SQLException {
+        return listaFuncionariosPorDataNascimento(Order.ASC);
+    }
+    public Funcionario retornaFuncionarioMaisVelho() throws SQLException {
+        return listaFuncionariosPorDataNascimento().get(0);
+    }
+    public List<String> retornaNomeIdadeFuncionarioMaisVelho() throws SQLException {
+        var funcionarioMaisVelho = retornaFuncionarioMaisVelho();
+        var nome = funcionarioMaisVelho.getNome();
+        var idade = calculaIdadePorDataNascimento(funcionarioMaisVelho.getDataNascimento());
+        return List.of(nome, Integer.toString(idade));
+    }
+    public static int calculaIdadePorDataNascimento(LocalDate dataNascimento) {
+        return Period.between(dataNascimento, LocalDate.now()).getYears();
     }
 }

@@ -74,4 +74,9 @@ public class ControladorFuncionario {
         visualizador.aniversariantesDosMeses(aniversariantes, meses);
         return aniversariantes;
     }
+    public List<String> retornaNomeIdadeFuncionarioMaisVelho() throws SQLException {
+        var dados = modelo.retornaNomeIdadeFuncionarioMaisVelho();
+        visualizador.retornaNomeIdadeFuncionarioMaisVelho(dados);
+        return dados;
+    }
 }

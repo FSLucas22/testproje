@@ -2,6 +2,7 @@ package model.entities;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Map;
 
 public class Funcionario extends Pessoa {
     private BigDecimal salario;
@@ -25,6 +26,7 @@ public class Funcionario extends Pessoa {
     public void setFuncao(String funcao) {
         this.funcao = funcao;
     }
+
     public String toString() {
         return "Funcionario(" +
                 "nome=" + getNome() + "," +

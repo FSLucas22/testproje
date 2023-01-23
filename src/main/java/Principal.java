@@ -47,7 +47,8 @@ public class Principal {
             // Exibe os funcionários que fazem aniversário nos meses 10 e 12
             controlador.aniversariantesDosMeses(10, 12);
 
-            // @TODO 3.9 – Imprimir o funcionário com a maior idade, exibir os atributos: nome e idade.
+            // Imprime o funcionário com a maior idade, exibindo os atributos: nome e idade
+            controlador.retornaNomeIdadeFuncionarioMaisVelho();
 
             // Exibe os funcionários em ordem alfabética
             controlador.listaFuncionariosPorNome();
