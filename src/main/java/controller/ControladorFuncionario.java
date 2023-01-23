@@ -1,6 +1,7 @@
 package controller;
 
 import model.ModeloFuncionario;
+import model.Order;
 import model.entities.Funcionario;
 import view.VisualizadorFuncionario;
 
@@ -56,6 +57,11 @@ public class ControladorFuncionario {
     }
     public List<Funcionario> listaFuncionariosPorNome() throws SQLException {
         var funcionarios = modelo.listaFuncionariosPorNome();
+        visualizador.listaFuncionariosPorNome(funcionarios);
+        return funcionarios;
+    }
+    public List<Funcionario> listaFuncionariosPorNome(Order order) throws SQLException {
+        var funcionarios = modelo.listaFuncionariosPorNome(order);
         visualizador.listaFuncionariosPorNome(funcionarios);
         return funcionarios;
     }
