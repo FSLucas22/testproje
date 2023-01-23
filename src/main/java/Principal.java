@@ -54,7 +54,9 @@ public class Principal {
             // Exibe o total dos salários dos funcionários
             controlador.retornaTotalSalarios();
 
-            // @TODO 3.12 – Imprimir quantos salários mínimos ganha cada funcionário, considerando que o salário mínimo é R$1212.00.
+            // Imprime quantos salários mínimos ganha cada funcionário
+            // considerando que o salário mínimo é R$1212.00
+            controlador.salariosMinimos(1212);
 
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Um erro ocorreu: ");

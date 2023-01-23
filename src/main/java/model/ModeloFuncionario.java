@@ -129,4 +129,17 @@ public class ModeloFuncionario {
         resultadoQuery.next();
         return resultadoQuery.getBigDecimal(1);
     }
+    public Map<String, BigDecimal> salariosMinimos(double salarioMinimo) throws SQLException {
+        Map<String, BigDecimal> relacaoNomeSalarioMinimo = new HashMap<>();
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT nome, salario / " + salarioMinimo + " FROM Funcionario"
+        );
+        while (resultadoQuery.next()) {
+            var nome = resultadoQuery.getString(1);
+            var quantSalariosMinimos = resultadoQuery.getBigDecimal(2);
+            relacaoNomeSalarioMinimo.put(nome, quantSalariosMinimos);
+        }
+        return relacaoNomeSalarioMinimo;
+    }
 }

@@ -64,4 +64,9 @@ public class ControladorFuncionario {
         visualizador.retornaTotalSalarios(total);
         return total;
     }
+    public Map<String, BigDecimal> salariosMinimos(double salarioMinimo) throws SQLException {
+        var relacao = modelo.salariosMinimos(salarioMinimo);
+        visualizador.salariosMinimos(salarioMinimo, relacao);
+        return relacao;
+    }
 }
