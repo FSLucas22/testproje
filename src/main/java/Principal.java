@@ -38,11 +38,11 @@ public class Principal {
             // Mostra todas as informações de todos os funcionários
             controlador.listaFuncionarios();
 
-            // Atualiza o salário de todos os funcionários em 10%
+            // Atualiza o salário de todos os funcionários em 10% e mostra a lista com os novos salários
             controlador.atualizaSalarioDeTodos(10);
 
-            // Mostra a lista com os salários atualizados
-            visualizador.listaFuncionarios(modelo.listaFuncionarios());
+            // Exibe funcionários agrupados por função
+            controlador.agrupaFuncionariosPorFuncao();
 
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Um erro ocorreu: ");
