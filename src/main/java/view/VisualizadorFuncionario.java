@@ -14,10 +14,10 @@ public class VisualizadorFuncionario extends Visualizador {
         super();
     }
     public void cadastraFuncionario(Funcionario funcionario) {
-        System.out.println("Funcionario " + funcionario.getNome() + "cadastrado com sucesso!");
+        System.out.println("Funcionario(a) " + funcionario.getNome() + " cadastrado(a) com sucesso!");
     }
     public void deletaFuncionarioPorNome(String nome) {
-        System.out.println("Funcionario " + nome + " deletado com sucesso!");
+        System.out.println("Funcionario(a) " + nome + " deletado(a) com sucesso!");
     }
     public void listaFuncionarios(List<Funcionario> funcionarios) {
         System.out.println(
@@ -35,5 +35,20 @@ public class VisualizadorFuncionario extends Visualizador {
         }
         System.out.println(
                 "##########################################################################################\n");
+    }
+
+    public void atualizaFuncionario(Funcionario antigoFuncionario, Funcionario novoFuncionario) {
+        System.out.println("Funcionário(a) " + antigoFuncionario.getNome() + "atualizado(a) com sucesso!");
+        System.out.println("Novos valores: " + novoFuncionario.toString());
+    }
+    public void atualizaFuncionarios(List<Funcionario> antigosFuncionarios, List<Funcionario> novosFuncionarios) {
+        for (int i=0; i<antigosFuncionarios.size(); i++) {
+            atualizaFuncionario(antigosFuncionarios.get(i), novosFuncionarios.get(i));
+        }
+    }
+    public void atualizaSalarioDeTodos(List<Funcionario> funcionarios, double porcentagem) {
+        System.out.println("Salário de todos os funcionários atualizado em " + porcentagem + "%!");
+        System.out.println("Exibindo novos valores...");
+        listaFuncionarios(funcionarios);
     }
 }

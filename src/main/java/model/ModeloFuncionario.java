@@ -11,11 +11,12 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class ModeloFuncionario {
-    private Connection conexao;
+    private final Connection conexao;
     public ModeloFuncionario(Connection conexao) {
         this.conexao = conexao;
     }
-    public Funcionario cadastraFuncionario(String nome, LocalDate dataNascimento, BigDecimal salario, String funcao) throws SQLException {
+    public Funcionario cadastraFuncionario(String nome, LocalDate dataNascimento,
+                                           BigDecimal salario, String funcao)  throws SQLException {
         String[] toReturn = {"id"};
         try (PreparedStatement comando = conexao.prepareStatement(
                 "INSERT INTO Funcionario(nome, data_nascimento, salario, funcao) VALUES (?, ?, ?, ?)",
@@ -59,6 +60,19 @@ public class ModeloFuncionario {
         }
         return funcionarios;
     }
+    public Funcionario retornaFuncionarPorId(int id) throws SQLException {
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT * FROM Funcionario WHERE id = " + id
+        );
+
+        resultadoQuery.next();
+        String nome = resultadoQuery.getString("nome");
+        LocalDate dataNascimento = resultadoQuery.getObject("data_nascimento", LocalDate.class);
+        BigDecimal salario = resultadoQuery.getBigDecimal("salario");
+        String funcao = resultadoQuery.getString("funcao");
+        return new Funcionario(id, nome, dataNascimento, salario, funcao);
+    }
     public Funcionario atualizaFuncionario(Funcionario funcionario) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
                 "UPDATE Funcionario SET nome=?, data_nascimento=?, salario=?, funcao=? WHERE id = ?"
@@ -70,13 +84,25 @@ public class ModeloFuncionario {
             comando.setString(4, funcionario.getFuncao());
             comando.setInt(5, funcionario.getId());
             comando.executeUpdate();
-            return funcionario;
+            return retornaFuncionarPorId(funcionario.getId());
         }
     }
     public List<Funcionario> atualizaFuncionarios(List<Funcionario> funcionarios) throws SQLException {
+        List<Funcionario> listaAtualizada = new ArrayList<>();
         for (Funcionario funcionario : funcionarios) {
-            atualizaFuncionario(funcionario);
+            var funcionarioAtualizado = atualizaFuncionario(funcionario);
+            listaAtualizada.add(funcionarioAtualizado);
         }
-        return funcionarios;
+        return listaAtualizada;
+    }
+    public List<Funcionario> atualizaSalarioDeTodos(double porcentagem) throws SQLException {
+        try (PreparedStatement comando = conexao.prepareStatement(
+                "UPDATE Funcionario SET salario=(salario+ (salario * ? / 100))"
+        )
+        ) {
+            comando.setBigDecimal(1, new BigDecimal(porcentagem));
+            comando.executeUpdate();
+            return listaFuncionarios();
+        }
     }
 }
