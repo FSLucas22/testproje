@@ -15,7 +15,7 @@ public class ModeloFuncionario {
     public ModeloFuncionario(Connection conexao) {
         this.conexao = conexao;
     }
-    public Funcionario criaFuncionario(String nome, LocalDate dataNascimento, BigDecimal salario, String funcao) throws SQLException {
+    public Funcionario cadastraFuncionario(String nome, LocalDate dataNascimento, BigDecimal salario, String funcao) throws SQLException {
         String[] toReturn = {"id"};
         try (PreparedStatement comando = conexao.prepareStatement(
                 "INSERT INTO Funcionario(nome, data_nascimento, salario, funcao) VALUES (?, ?, ?, ?)",

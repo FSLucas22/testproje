@@ -14,7 +14,7 @@ public class ModeloPessoa {
     public ModeloPessoa(Connection conexao) {
         this.conexao = conexao;
     }
-    public Pessoa criaPessoa(String nome, LocalDate dataNascimento) throws SQLException {
+    public Pessoa cadastraPessoa(String nome, LocalDate dataNascimento) throws SQLException {
         String [] toReturn = {"id"};
         try (PreparedStatement comando = conexao.prepareStatement(
                 "INSERT INTO Pessoa(nome, data_nascimento) VALUES (?, ?)",
