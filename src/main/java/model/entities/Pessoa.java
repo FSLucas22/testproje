@@ -31,6 +31,12 @@ public class Pessoa implements Entidade {
     public int getId() {
         return id;
     }
+
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
     public String toString() {
         return "Pessoa(" +
                 "nome=" + nome + "," +

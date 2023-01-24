@@ -1,5 +1,6 @@
 import controller.ControladorFuncionario;
 import model.Conector;
+import model.MockModeloFuncionario;
 import model.ModeloFuncionario;
 import model.entities.Funcionario;
 import view.VisualizadorFuncionario;
@@ -23,7 +24,8 @@ public class Principal {
                 senha
         )){
             // Cria o controlador para lidar com o banco
-            var modelo = new ModeloFuncionario(conexao);
+            //var modelo = new ModeloFuncionario(conexao);
+            var modelo = new MockModeloFuncionario();
             var visualizador = new VisualizadorFuncionario();
             var controlador = new ControladorFuncionario(modelo, visualizador);
 
