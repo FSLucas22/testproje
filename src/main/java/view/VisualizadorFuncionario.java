@@ -3,7 +3,6 @@ package view;
 import model.entities.Funcionario;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -69,14 +68,17 @@ public class VisualizadorFuncionario extends VisualizadorCMD<Funcionario>
         System.out.println("Total: " + "R$" + getFormatador().formatarDecimal(total) + "\n");
     }
     @Override
-    public void listarComSalariosMinimos(double salarioMinimo, Map<String, BigDecimal> relacao) {
+    public void listarComSalariosMinimos(double salarioMinimo, Map<Funcionario, BigDecimal> relacao) {
         System.out.println("Exibindo quantos salários mínimos ganha cada funcionário...");
         System.out.println("Valor considerado do salário mínimo: R$" + salarioMinimo);
 
+        // Exibe o nome das colunas de forma a ficar alinhada com os dados das linhas
         var colunas = Formatador.criarStringEspacada("Nome", "Salário");
         System.out.println(colunas);
-        relacao.forEach((nome, salario) -> {
-            var linha = Formatador.criarStringEspacada(nome,
+
+        relacao.forEach((funcionario, salario) -> {
+            // Exibe os dados da linha, formatando o salário com base o formatador
+            var linha = Formatador.criarStringEspacada(funcionario.getNome(),
                     getFormatador().formatarDecimal(salario));
             System.out.println(linha);
         });
@@ -86,6 +88,8 @@ public class VisualizadorFuncionario extends VisualizadorCMD<Funcionario>
     public void listarAniversariantesDosMeses(List<Funcionario> aniversariantes, int ... meses) {
         StringBuilder mesesConsiderados = new StringBuilder();
         for (int i=0; i<meses.length; i++) {
+            // Constrói uma string para exibir os meses considerados separando-os por vírgula
+            // Ex: "2, 6" ou "10, 12, 1"
             mesesConsiderados.append(meses[i]).append((i == meses.length - 1)? "" : ", ");
         }
         System.out.println("Exibindo os aniversariantes dos meses: " + mesesConsiderados.toString());
@@ -99,6 +103,7 @@ public class VisualizadorFuncionario extends VisualizadorCMD<Funcionario>
         System.out.println();
     }
     public String criarStringEspacadaDeFuncionario(Funcionario funcionario) {
+        //Cria uma string espaçada com todos os dados de um funcionário exceto o id
         var nome = funcionario.getNome();
         var dataNascimento = getFormatador().formatarData(funcionario.getDataNascimento());
         var salario = getFormatador().formatarDecimal(funcionario.getSalario());

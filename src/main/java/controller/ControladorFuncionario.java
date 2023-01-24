@@ -3,7 +3,6 @@ package controller;
 import model.IModeloFuncionario;
 import view.IVisualizadorFuncionario;
 
-
 public class ControladorFuncionario implements IControladorFuncionario {
     private final IModeloFuncionario modelo;
     private final IVisualizadorFuncionario visualizador;
@@ -19,4 +18,6 @@ public class ControladorFuncionario implements IControladorFuncionario {
     public IVisualizadorFuncionario getVisualizador() {
         return visualizador;
     }
+
+    // Demais métodos implementados por default nas interfaces
 }

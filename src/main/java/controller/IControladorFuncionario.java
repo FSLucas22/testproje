@@ -27,7 +27,7 @@ public interface IControladorFuncionario extends
         getVisualizador().retornarTotalSalarios(total);
         return total;
     }
-    default Map<String, BigDecimal> listarComSalariosMinimos(double salarioMinimo) throws SQLException {
+    default Map<Funcionario, BigDecimal> listarComSalariosMinimos(double salarioMinimo) throws SQLException {
         var relacao = getModelo().listarComSalariosMinimos(salarioMinimo);
         getVisualizador().listarComSalariosMinimos(salarioMinimo, relacao);
         return relacao;

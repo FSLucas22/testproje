@@ -8,9 +8,13 @@ import view.IVisualizador;
 import java.sql.SQLException;
 import java.util.List;
 
+// Esse Generic triplo foi a única forma que encontrei de forçar que o modelo e o visualizador se referissem
+// à mesma entidade e ao mesmo tempo que fosse possível reaproveitar os métodos default para diversas
+// implementações de modelos e visualizações
 public interface IControlador<T extends IEntidade, R extends IModelo<T>, S extends IVisualizador<T>> {
-    R getModelo();
-    S getVisualizador();
+    R getModelo(); // retorna o objeto que se comunica com o banco de dados
+    S getVisualizador(); // retorna o objeto responsável por exibir as informações na tela
+
     default T cadastrar(T entidade) throws SQLException {
         var novaEntidade = getModelo().cadastrar(entidade);
         getVisualizador().cadastrar(entidade);

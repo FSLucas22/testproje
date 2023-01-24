@@ -1,7 +1,18 @@
+/*
+    Para rodar a aplicação é necessário antes subir o banco de dados com a tabela
+    Funcionario (Script SQL para geração da tabela em src/main/cria_tabela_funcionario.sql).
+    Também é necessário colocar a url do driver jdbc, o nome de usuário e a senha nas variáveis abaixo
+    para estabelecer a conexão com o banco.
+    Em caso de impossibilidade de conexão, é possível remover do código a tentativa de conexão e utilizar o
+    objeto MockModeloFuncionario para testar a aplicação, ao inves de utilizar o ModeloFuncionario.
+ */
+
+
 import controller.ControladorFuncionario;
 import model.Conector;
 import model.MockModeloFuncionario;
 import model.ModeloFuncionario;
+import model.Ordem;
 import model.entities.Funcionario;
 import view.VisualizadorFuncionario;
 
@@ -13,6 +24,8 @@ import java.time.format.DateTimeFormatter;
 
 public class Principal {
     private static final DateTimeFormatter formatData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    // Necessário adaptar com as informações do banco
     private static final String jdbcUrl = "jdbc:oracle:thin:@localhost:1521:XE";
     private static final String nomeUsuario = "testuser";
     private static final String senha = "12345";
@@ -24,8 +37,8 @@ public class Principal {
                 senha
         )){
             // Cria o controlador para lidar com o banco
-            //var modelo = new ModeloFuncionario(conexao);
-            var modelo = new MockModeloFuncionario();
+            var modelo = new ModeloFuncionario(conexao);
+            // var modelo = new MockModeloFuncionario();
             var visualizador = new VisualizadorFuncionario();
             var controlador = new ControladorFuncionario(modelo, visualizador);
 
@@ -41,7 +54,8 @@ public class Principal {
             // Atualiza o salário de todos os funcionários em 10% e mostra a lista com os novos salários
             controlador.atualizarSalarioDeTodos(10);
 
-            // Exibe os funcionários agrupados por função
+            // Exibe os funcionários agrupados por função,
+            // retornando um Map que agrupa os funcionários por função
             controlador.agruparPorFuncao();
 
             // Exibe os funcionários que fazem aniversário nos meses 10 e 12
@@ -65,7 +79,9 @@ public class Principal {
             System.out.println(e.getMessage());
         }
     }
+
     public static void insereFuncionarios(ControladorFuncionario controlador) throws SQLException {
+        // Método para realizar a carga inicial de dados
         controlador.cadastrar(new Funcionario("Maria", LocalDate.parse("18/10/2000", formatData),
                 BigDecimal.valueOf(2009.44), "Operador"));
         controlador.cadastrar(new Funcionario("João", LocalDate.parse("12/05/1990", formatData),
