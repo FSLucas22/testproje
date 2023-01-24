@@ -1,11 +1,10 @@
 package view;
 
-import model.entities.Entidade;
-import model.entities.Funcionario;
+import model.entities.IEntidade;
 
 import java.util.List;
 
-public abstract class VisualizadorCMD<T extends Entidade> implements IVisualizador<T>  {
+public abstract class VisualizadorCMD<T extends IEntidade> implements IVisualizador<T>  {
     private final Formatador formatador;
     public VisualizadorCMD(Formatador formatador) {
         this.formatador = formatador;

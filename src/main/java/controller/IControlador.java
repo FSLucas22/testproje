@@ -1,14 +1,14 @@
 package controller;
 
-import model.Modelo;
+import model.IModelo;
 import model.Ordem;
-import model.entities.Entidade;
+import model.entities.IEntidade;
 import view.IVisualizador;
 
 import java.sql.SQLException;
 import java.util.List;
 
-public interface IControlador<T extends Entidade, R extends Modelo<T>, S extends IVisualizador<T>> {
+public interface IControlador<T extends IEntidade, R extends IModelo<T>, S extends IVisualizador<T>> {
     R getModelo();
     S getVisualizador();
     default T cadastrar(T entidade) throws SQLException {

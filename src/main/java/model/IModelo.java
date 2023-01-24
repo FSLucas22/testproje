@@ -1,12 +1,12 @@
 package model;
 
-import model.entities.Entidade;
+import model.entities.IEntidade;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public interface Modelo<T extends Entidade> {
+public interface IModelo<T extends IEntidade> {
     T cadastrar(T entidade) throws SQLException;
     void deletarPorNome(String nome) throws SQLException;
     List<T> listar() throws SQLException;

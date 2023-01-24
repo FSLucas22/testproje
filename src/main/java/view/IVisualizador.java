@@ -1,10 +1,10 @@
 package view;
 
-import model.entities.Entidade;
+import model.entities.IEntidade;
 
 import java.util.List;
 
-public interface IVisualizador<T extends Entidade> {
+public interface IVisualizador<T extends IEntidade> {
     void cadastrar(T entidade);
     void deletarPorNome(String nome);
     void listar(List<T> entidades);

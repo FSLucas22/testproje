@@ -2,7 +2,7 @@ package model.entities;
 
 import java.time.LocalDate;
 
-public class Pessoa implements Entidade {
+public class Pessoa implements IEntidade {
     private int id;
     private String nome;
     private LocalDate dataNascimento;

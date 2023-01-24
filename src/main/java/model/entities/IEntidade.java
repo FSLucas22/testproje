@@ -1,6 +1,6 @@
 package model.entities;
 
-public interface Entidade {
+public interface IEntidade {
     int getId();
     void setId(int id);
     String getNome();

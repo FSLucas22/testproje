@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 
-public interface IModeloFuncionario extends Modelo<Funcionario> {
+public interface IModeloFuncionario extends IModelo<Funcionario> {
     List<Funcionario> atualizarSalarioDeTodos(double porcentagem) throws SQLException;
     BigDecimal retornarTotalSalarios() throws SQLException;
     Map<String, BigDecimal> listarComSalariosMinimos(double salarioMinimo) throws SQLException;

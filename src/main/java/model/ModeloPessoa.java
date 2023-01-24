@@ -7,7 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModeloPessoa implements Modelo<Pessoa> {
+public class ModeloPessoa implements IModelo<Pessoa> {
     private final Connection conexao;
     public ModeloPessoa(Connection conexao) {
         this.conexao = conexao;
