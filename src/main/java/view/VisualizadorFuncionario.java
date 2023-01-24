@@ -73,7 +73,7 @@ public class VisualizadorFuncionario extends VisualizadorCMD<Funcionario>
         System.out.println("Valor considerado do salário mínimo: R$" + salarioMinimo);
 
         // Exibe o nome das colunas de forma a ficar alinhada com os dados das linhas
-        var colunas = Formatador.criarStringEspacada("Nome", "Salário");
+        var colunas = Formatador.criarStringEspacada("Nome", "Quantidade de salários mínimos");
         System.out.println(colunas);
 
         relacao.forEach((funcionario, salario) -> {

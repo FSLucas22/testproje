@@ -148,9 +148,9 @@ public class ModeloFuncionario implements IModeloFuncionario{
         Map<Funcionario, BigDecimal> relacaoFuncionarioSalarioMinimo = new HashMap<>();
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
-                // Prepara o comando para retornar todos os dados dos funcionários juntamente com
+                // Prepara o comando para retornar os IDs dos funcionários juntamente com
                 // a quantidade de salários mínimos que recebem
-                "SELECT *, salario / " + salarioMinimo + " as salarios_minimos FROM Funcionario"
+                "SELECT id, salario / " + salarioMinimo + " FROM Funcionario"
         );
         while (resultadoQuery.next()) {
             // pega o funcionário
