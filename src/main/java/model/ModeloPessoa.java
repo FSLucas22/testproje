@@ -1,10 +1,7 @@
 package model;
 
-import model.entities.Entidade;
-import model.entities.Funcionario;
 import model.entities.Pessoa;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -66,10 +63,10 @@ public class ModeloPessoa implements Modelo<Pessoa> {
     }
 
     @Override
-    public List<Pessoa> listarPorNome(Order order) throws SQLException {
+    public List<Pessoa> listarPorNome(Ordem ordem) throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
-                "SELECT * FROM Pessoa ORDER BY nome " + order
+                "SELECT * FROM Pessoa ORDER BY nome " + ordem
         );
         return criarPorResultSet(resultadoQuery);
     }

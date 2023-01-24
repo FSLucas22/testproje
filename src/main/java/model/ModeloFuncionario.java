@@ -5,7 +5,6 @@ import model.entities.Funcionario;
 import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -80,10 +79,10 @@ public class ModeloFuncionario implements IModeloFuncionario{
         return criarPorResultSet(resultadoQuery).get(0);
     }
     @Override
-    public List<Funcionario> listarPorNome(Order order) throws SQLException {
+    public List<Funcionario> listarPorNome(Ordem ordem) throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
-                "SELECT * FROM Funcionario ORDER BY nome " + order
+                "SELECT * FROM Funcionario ORDER BY nome " + ordem
         );
         return criarPorResultSet(resultadoQuery);
     }
@@ -150,10 +149,10 @@ public class ModeloFuncionario implements IModeloFuncionario{
         return criarPorResultSet(resultadoQuery);
     }
     @Override
-    public List<Funcionario> listarFuncionariosPorDataNascimento(Order order) throws SQLException {
+    public List<Funcionario> listarFuncionariosPorDataNascimento(Ordem ordem) throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
-                "SELECT * FROM Funcionario ORDER BY data_nascimento " + order
+                "SELECT * FROM Funcionario ORDER BY data_nascimento " + ordem
         );
         return criarPorResultSet(resultadoQuery);
     }

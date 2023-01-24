@@ -1,10 +1,7 @@
 package view;
 
-import model.Order;
 import model.entities.Entidade;
-import model.entities.Pessoa;
 
-import java.sql.SQLException;
 import java.util.List;
 
 public interface IVisualizador<T extends Entidade> {

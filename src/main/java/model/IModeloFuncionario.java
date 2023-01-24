@@ -17,9 +17,9 @@ public interface IModeloFuncionario extends Modelo<Funcionario> {
     BigDecimal retornarTotalSalarios() throws SQLException;
     Map<String, BigDecimal> listarComSalariosMinimos(double salarioMinimo) throws SQLException;
     List<Funcionario> listarAniversariantesDosMeses(int ... meses) throws SQLException;
-    List<Funcionario> listarFuncionariosPorDataNascimento(Order order) throws SQLException;
+    List<Funcionario> listarFuncionariosPorDataNascimento(Ordem order) throws SQLException;
     default List<Funcionario> listarFuncionariosPorDataNascimento() throws SQLException {
-        return listarFuncionariosPorDataNascimento(Order.ASC);
+        return listarFuncionariosPorDataNascimento(Ordem.ASC);
     }
     default Funcionario retornarFuncionarioMaisVelho() throws SQLException {
         return listarFuncionariosPorDataNascimento().get(0);

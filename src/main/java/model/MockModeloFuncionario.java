@@ -61,9 +61,9 @@ public class MockModeloFuncionario implements IModeloFuncionario {
         ).collect(Collectors.toList());
     }
     @Override
-    public List<Funcionario> listarFuncionariosPorDataNascimento(Order order) throws SQLException {
+    public List<Funcionario> listarFuncionariosPorDataNascimento(Ordem ordem) throws SQLException {
         var funcionarios = listar();
-        if (order == Order.ASC) {
+        if (ordem == Ordem.ASC) {
             funcionarios.sort(
                     Comparator.comparing(Pessoa::getDataNascimento)
             );
@@ -98,9 +98,9 @@ public class MockModeloFuncionario implements IModeloFuncionario {
     }
 
     @Override
-    public List<Funcionario> listarPorNome(Order order) throws SQLException {
+    public List<Funcionario> listarPorNome(Ordem ordem) throws SQLException {
         var funcionarios = listar();
-        if (order == Order.ASC) {
+        if (ordem == Ordem.ASC) {
             funcionarios.sort(
                     Comparator.comparing(Pessoa::getNome)
             );

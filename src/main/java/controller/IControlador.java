@@ -1,7 +1,7 @@
 package controller;
 
 import model.Modelo;
-import model.Order;
+import model.Ordem;
 import model.entities.Entidade;
 import view.IVisualizador;
 
@@ -25,13 +25,13 @@ public interface IControlador<T extends Entidade, R extends Modelo<T>, S extends
         getVisualizador().listar(entidades);
         return entidades;
     }
-    default List<T> listarPorNome(Order order) throws SQLException {
-        var entidades = getModelo().listarPorNome(order);
+    default List<T> listarPorNome(Ordem ordem) throws SQLException {
+        var entidades = getModelo().listarPorNome(ordem);
         getVisualizador().listarPorNome(entidades);
         return entidades;
     };
     default List<T> listarPorNome() throws SQLException {
-        return listarPorNome(Order.ASC);
+        return listarPorNome(Ordem.ASC);
     }
     default T atualizar(T entidade) throws SQLException {
         var entidadesAtualizada = getModelo().atualizar(entidade);

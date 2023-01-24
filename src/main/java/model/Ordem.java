@@ -1,5 +1,5 @@
 package model;
 
-public enum Order {
+public enum Ordem {
     ASC, DESC;
 }
