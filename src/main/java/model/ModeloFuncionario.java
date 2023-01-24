@@ -1,7 +1,6 @@
 package model;
 
 import model.entities.Funcionario;
-import model.entities.Pessoa;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -12,12 +11,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ModeloFuncionario {
+public class ModeloFuncionario implements IModeloFuncionario{
     private final Connection conexao;
     public ModeloFuncionario(Connection conexao) {
         this.conexao = conexao;
     }
-    private List<Funcionario> criaFuncionariosPorResultSet(ResultSet resultSet) throws SQLException {
+
+    public List<Funcionario> criarPorResultSet(ResultSet resultSet) throws SQLException {
         List<Funcionario> funcionarios = new ArrayList<>();
         while (resultSet.next()) {
             int id = resultSet.getInt("id");
@@ -30,14 +30,18 @@ public class ModeloFuncionario {
         }
         return funcionarios;
     }
-    public Funcionario cadastraFuncionario(String nome, LocalDate dataNascimento,
-                                           BigDecimal salario, String funcao)  throws SQLException {
+    @Override
+    public Funcionario cadastrar(Funcionario funcionario)  throws SQLException {
         String[] toReturn = {"id"};
         try (PreparedStatement comando = conexao.prepareStatement(
                 "INSERT INTO Funcionario(nome, data_nascimento, salario, funcao) VALUES (?, ?, ?, ?)",
                 toReturn
         )
         ) {
+            var nome = funcionario.getNome();
+            var dataNascimento = funcionario.getDataNascimento();
+            var salario = funcionario.getSalario();
+            var funcao = funcionario.getFuncao();
             comando.setString(1, nome);
             comando.setObject(2, dataNascimento);
             comando.setObject(3, salario);
@@ -49,7 +53,8 @@ public class ModeloFuncionario {
             return new Funcionario(id, nome, dataNascimento, salario, funcao);
         }
     }
-    public void deletaFuncionarioPorNome(String nome) throws SQLException {
+    @Override
+    public void deletarPorNome(String nome) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
                 "DELETE FROM Funcionario WHERE nome = ?"
         )
@@ -58,43 +63,32 @@ public class ModeloFuncionario {
             comando.executeUpdate();
         }
     }
-    public List<Funcionario> listaFuncionarios() throws SQLException{
+    @Override
+    public List<Funcionario> listar() throws SQLException{
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
                 "SELECT * FROM Funcionario"
         );
-        return criaFuncionariosPorResultSet(resultadoQuery);
+        return criarPorResultSet(resultadoQuery);
     }
-    public Funcionario retornaFuncionarPorId(int id) throws SQLException {
+    @Override
+    public Funcionario retornarPorId(int id) throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
                 "SELECT * FROM Funcionario WHERE id = " + id
         );
-        return criaFuncionariosPorResultSet(resultadoQuery).get(0);
+        return criarPorResultSet(resultadoQuery).get(0);
     }
-    public Map<String, List<Funcionario>> agrupaFuncionariosPorFuncao() throws SQLException {
-        Map<String, List<Funcionario>> grupos = new HashMap<>();
-        for (Funcionario funcionario : listaFuncionarios()) {
-            var funcao = funcionario.getFuncao();
-            if (!grupos.containsKey(funcao)) {
-                grupos.put(funcao, new ArrayList<>());
-            }
-            grupos.get(funcao).add(funcionario);
-        }
-        return grupos;
-    }
-    public List<Funcionario> listaFuncionariosPorNome(Order order) throws SQLException {
+    @Override
+    public List<Funcionario> listarPorNome(Order order) throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
                 "SELECT * FROM Funcionario ORDER BY nome " + order
         );
-        return criaFuncionariosPorResultSet(resultadoQuery);
+        return criarPorResultSet(resultadoQuery);
     }
-    public List<Funcionario> listaFuncionariosPorNome() throws SQLException {
-        Statement comando = conexao.createStatement();
-        return listaFuncionariosPorNome(Order.ASC);
-    }
-    public Funcionario atualizaFuncionario(Funcionario funcionario) throws SQLException {
+    @Override
+    public Funcionario atualizar(Funcionario funcionario) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
                 "UPDATE Funcionario SET nome=?, data_nascimento=?, salario=?, funcao=? WHERE id = ?"
         )
@@ -105,28 +99,22 @@ public class ModeloFuncionario {
             comando.setString(4, funcionario.getFuncao());
             comando.setInt(5, funcionario.getId());
             comando.executeUpdate();
-            return retornaFuncionarPorId(funcionario.getId());
+            return retornarPorId(funcionario.getId());
         }
     }
-    public List<Funcionario> atualizaFuncionarios(List<Funcionario> funcionarios) throws SQLException {
-        List<Funcionario> listaAtualizada = new ArrayList<>();
-        for (Funcionario funcionario : funcionarios) {
-            var funcionarioAtualizado = atualizaFuncionario(funcionario);
-            listaAtualizada.add(funcionarioAtualizado);
-        }
-        return listaAtualizada;
-    }
-    public List<Funcionario> atualizaSalarioDeTodos(double porcentagem) throws SQLException {
+    @Override
+    public List<Funcionario> atualizarSalarioDeTodos(double porcentagem) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
                 "UPDATE Funcionario SET salario=(salario+ (salario * ? / 100))"
         )
         ) {
             comando.setBigDecimal(1, new BigDecimal(porcentagem));
             comando.executeUpdate();
-            return listaFuncionarios();
+            return listar();
         }
     }
-    public BigDecimal retornaTotalSalarios() throws SQLException {
+    @Override
+    public BigDecimal retornarTotalSalarios() throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
                 "SELECT SUM(salario) FROM Funcionario"
@@ -134,7 +122,8 @@ public class ModeloFuncionario {
         resultadoQuery.next();
         return resultadoQuery.getBigDecimal(1);
     }
-    public Map<String, BigDecimal> salariosMinimos(double salarioMinimo) throws SQLException {
+    @Override
+    public Map<String, BigDecimal> listarComSalariosMinimos(double salarioMinimo) throws SQLException {
         Map<String, BigDecimal> relacaoNomeSalarioMinimo = new HashMap<>();
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
@@ -147,8 +136,10 @@ public class ModeloFuncionario {
         }
         return relacaoNomeSalarioMinimo;
     }
-    public List<Funcionario> aniversariantesDosMeses(int ... meses) throws SQLException {
-        StringBuilder query = new StringBuilder("SELECT * FROM Funcionario WHERE EXTRACT(MONTH FROM data_nascimento) in (");
+    @Override
+    public List<Funcionario> listarAniversariantesDosMeses(int ... meses) throws SQLException {
+        StringBuilder query = new StringBuilder(
+                "SELECT * FROM Funcionario WHERE EXTRACT(MONTH FROM data_nascimento) in (");
         for (int i=0; i<meses.length; i++) {
             query.append(meses[i]).append((i == meses.length - 1) ? ")" : ",");
         }
@@ -156,28 +147,14 @@ public class ModeloFuncionario {
         ResultSet resultadoQuery = comando.executeQuery(
                 query.toString()
         );
-        return criaFuncionariosPorResultSet(resultadoQuery);
+        return criarPorResultSet(resultadoQuery);
     }
-    public List<Funcionario> listaFuncionariosPorDataNascimento(Order order) throws SQLException {
+    @Override
+    public List<Funcionario> listarFuncionariosPorDataNascimento(Order order) throws SQLException {
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
                 "SELECT * FROM Funcionario ORDER BY data_nascimento " + order
         );
-        return criaFuncionariosPorResultSet(resultadoQuery);
-    }
-    public List<Funcionario> listaFuncionariosPorDataNascimento() throws SQLException {
-        return listaFuncionariosPorDataNascimento(Order.ASC);
-    }
-    public Funcionario retornaFuncionarioMaisVelho() throws SQLException {
-        return listaFuncionariosPorDataNascimento().get(0);
-    }
-    public List<String> retornaNomeIdadeFuncionarioMaisVelho() throws SQLException {
-        var funcionarioMaisVelho = retornaFuncionarioMaisVelho();
-        var nome = funcionarioMaisVelho.getNome();
-        var idade = calculaIdadePorDataNascimento(funcionarioMaisVelho.getDataNascimento());
-        return List.of(nome, Integer.toString(idade));
-    }
-    public static int calculaIdadePorDataNascimento(LocalDate dataNascimento) {
-        return Period.between(dataNascimento, LocalDate.now()).getYears();
+        return criarPorResultSet(resultadoQuery);
     }
 }

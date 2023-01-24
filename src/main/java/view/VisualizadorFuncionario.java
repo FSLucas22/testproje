@@ -4,105 +4,105 @@ import model.entities.Funcionario;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.text.DecimalFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
-public class VisualizadorFuncionario extends Visualizador {
-    public VisualizadorFuncionario(DateTimeFormatter formatData, DecimalFormat formatSalario) {
-        super(formatData, formatSalario);
+public class VisualizadorFuncionario extends VisualizadorCMD<Funcionario>
+        implements IVisualizadorFuncionario {
+    public VisualizadorFuncionario(Formatador formatador) {
+        super(formatador);
     }
     public VisualizadorFuncionario() {
         super();
     }
-    public void cadastraFuncionario(Funcionario funcionario) {
+    @Override
+    public void cadastrar(Funcionario funcionario) {
         System.out.println("Funcionario(a) " + funcionario.getNome() + " cadastrado(a) com sucesso!\n");
     }
-    public void deletaFuncionarioPorNome(String nome) {
+    @Override
+    public void deletarPorNome(String nome) {
         System.out.println("Funcionario(a) " + nome + " deletado(a) com sucesso!\n");
     }
-    public void listaFuncionarios(List<Funcionario> funcionarios) {
+    @Override
+    public void listar(List<Funcionario> funcionarios) {
         System.out.println(
                 "################################ Lista de Funcionarios ##################################");
-        var colunas = criaStringEspacada(
+        var colunas = Formatador.criarStringEspacada(
                 "Nome", "Data de nascimento", "Salario", "Função");
         System.out.println(colunas);
         for (Funcionario funcionario : funcionarios) {
-            var linha = criaStringEspacadaDeFuncionario(funcionario);
+            var linha = criarStringEspacadaDeFuncionario(funcionario);
             System.out.println(linha);
         }
         System.out.println(
                 "##########################################################################################\n");
     }
-    public void atualizaFuncionario(Funcionario antigoFuncionario, Funcionario novoFuncionario) {
+    @Override
+    public void atualizar(Funcionario antigoFuncionario, Funcionario novoFuncionario) {
         System.out.println("Funcionário(a) " + antigoFuncionario.getNome() + "atualizado(a) com sucesso!");
         System.out.println("Novos valores: " + novoFuncionario.toString() + "\n");
     }
-    public void atualizaFuncionarios(List<Funcionario> antigosFuncionarios, List<Funcionario> novosFuncionarios) {
-        for (int i=0; i<antigosFuncionarios.size(); i++) {
-            atualizaFuncionario(antigosFuncionarios.get(i), novosFuncionarios.get(i));
-        }
-        System.out.println();
+    @Override
+    public void listarPorNome(List<Funcionario> funcionarios) {
+        System.out.println("Exibindo funcionários em ordem alfabética...");
+        listar(funcionarios);
     }
-    public void atualizaSalarioDeTodos(List<Funcionario> funcionarios, double porcentagem) {
+    @Override
+    public void atualizarSalarioDeTodos(List<Funcionario> funcionarios, double porcentagem) {
         System.out.println("Salário de todos os funcionários atualizado em " + porcentagem + "%!");
         System.out.println("Exibindo novos valores...");
-        listaFuncionarios(funcionarios);
+        listar(funcionarios);
     }
-
-    public void agrupaFuncionariosPorFuncao(Map<String, List<Funcionario>> grupos) {
+    @Override
+    public void agruparPorFuncao(Map<String, List<Funcionario>> grupos) {
         System.out.println("Exibindo funcionários agrupados por função...");
         grupos.forEach((funcao, funcionarios) -> {
             System.out.println("Função: " + funcao);
             funcionarios.forEach(
-                    funcionario -> System.out.println(criaStringEspacadaDeFuncionario(funcionario)));
+                    funcionario -> System.out.println(criarStringEspacadaDeFuncionario(funcionario)));
         });
         System.out.println();
     }
-    public void listaFuncionariosPorNome(List<Funcionario> funcionarios) {
-        System.out.println("Exibindo funcionários em ordem alfabética...");
-        listaFuncionarios(funcionarios);
-    }
-    public void retornaTotalSalarios(BigDecimal total) {
+    @Override
+    public void retornarTotalSalarios(BigDecimal total) {
         System.out.println("Exibindo o salário total de todos os funcionários...");
-        System.out.println("Total: " + "R$" + formataSalario(total) + "\n");
+        System.out.println("Total: " + "R$" + getFormatador().formatarDecimal(total) + "\n");
     }
-    public void salariosMinimos(double salarioMinimo, Map<String, BigDecimal> relacao) {
+    @Override
+    public void listarComSalariosMinimos(double salarioMinimo, Map<String, BigDecimal> relacao) {
         System.out.println("Exibindo quantos salários mínimos ganha cada funcionário...");
         System.out.println("Valor considerado do salário mínimo: R$" + salarioMinimo);
 
-        var colunas = criaStringEspacada("Nome", "Salário");
+        var colunas = Formatador.criarStringEspacada("Nome", "Salário");
         System.out.println(colunas);
         relacao.forEach((nome, salario) -> {
-            var linha = criaStringEspacada(nome, formataSalario(salario));
+            var linha = Formatador.criarStringEspacada(nome,
+                    getFormatador().formatarDecimal(salario));
             System.out.println(linha);
         });
         System.out.println();
     }
-    public void aniversariantesDosMeses(List<Funcionario> aniversariantes, int ... meses) {
+    @Override
+    public void listarAniversariantesDosMeses(List<Funcionario> aniversariantes, int ... meses) {
         StringBuilder mesesConsiderados = new StringBuilder();
         for (int i=0; i<meses.length; i++) {
             mesesConsiderados.append(meses[i]).append((i == meses.length - 1)? "" : ", ");
         }
         System.out.println("Exibindo os aniversariantes dos meses: " + mesesConsiderados.toString());
-        listaFuncionarios(aniversariantes);
+        listar(aniversariantes);
     }
-    public void retornaNomeIdadeFuncionarioMaisVelho(List<String> dados) throws SQLException {
+    @Override
+    public void retornarNomeIdadeFuncionarioMaisVelho(List<String> dados) {
         System.out.println("Exibindo o nome e idade do funcionário mais velho...");
         System.out.println("Nome: " + dados.get(0));
         System.out.println("Idade: " + dados.get(1));
         System.out.println();
     }
-    public String criaStringEspacadaDeFuncionario(Funcionario funcionario) {
+    public String criarStringEspacadaDeFuncionario(Funcionario funcionario) {
         var nome = funcionario.getNome();
-        var dataNascimento = formataData(funcionario.getDataNascimento());
-        var salario = formataSalario(funcionario.getSalario());
+        var dataNascimento = getFormatador().formatarData(funcionario.getDataNascimento());
+        var salario = getFormatador().formatarDecimal(funcionario.getSalario());
         var funcao = funcionario.getFuncao();
-        return criaStringEspacada(nome, dataNascimento, salario, funcao);
+        return Formatador.criarStringEspacada(nome, dataNascimento, salario, funcao);
     }
 }

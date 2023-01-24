@@ -1,0 +1,46 @@
+package controller;
+
+import model.Modelo;
+import model.Order;
+import model.entities.Entidade;
+import view.IVisualizador;
+
+import java.sql.SQLException;
+import java.util.List;
+
+public interface IControlador<T extends Entidade, R extends Modelo<T>, S extends IVisualizador<T>> {
+    R getModelo();
+    S getVisualizador();
+    default T cadastrar(T entidade) throws SQLException {
+        var novaEntidade = getModelo().cadastrar(entidade);
+        getVisualizador().cadastrar(entidade);
+        return novaEntidade;
+    }
+    default void deletarPorNome(String nome) throws SQLException {
+        getModelo().deletarPorNome(nome);
+        getVisualizador().deletarPorNome(nome);
+    }
+    default List<T> listar() throws SQLException {
+        var entidades = getModelo().listar();
+        getVisualizador().listar(entidades);
+        return entidades;
+    }
+    default List<T> listarPorNome(Order order) throws SQLException {
+        var entidades = getModelo().listarPorNome(order);
+        getVisualizador().listarPorNome(entidades);
+        return entidades;
+    };
+    default List<T> listarPorNome() throws SQLException {
+        return listarPorNome(Order.ASC);
+    }
+    default T atualizar(T entidade) throws SQLException {
+        var entidadesAtualizada = getModelo().atualizar(entidade);
+        getVisualizador().atualizar(entidade, entidadesAtualizada);
+        return entidadesAtualizada;
+    }
+    default List<T> atualizar(List<T> entidades) throws SQLException {
+        var entidadesAtualizadas = getModelo().atualizar(entidades);
+        getVisualizador().atualizar(entidades, entidadesAtualizadas);
+        return entidadesAtualizadas;
+    }
+}

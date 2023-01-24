@@ -1,5 +1,6 @@
 package model;
 
+import model.entities.Entidade;
 import model.entities.Funcionario;
 import model.entities.Pessoa;
 
@@ -9,18 +10,33 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModeloPessoa {
-    private Connection conexao;
+public class ModeloPessoa implements Modelo<Pessoa> {
+    private final Connection conexao;
     public ModeloPessoa(Connection conexao) {
         this.conexao = conexao;
     }
-    public Pessoa cadastraPessoa(String nome, LocalDate dataNascimento) throws SQLException {
+
+    public List<Pessoa> criarPorResultSet(ResultSet resultSet) throws SQLException {
+        List<Pessoa> pessoas = new ArrayList<>();
+        while (resultSet.next()) {
+            int id = resultSet.getInt("id");
+            String nome = resultSet.getString("nome");
+            LocalDate dataNascimento = resultSet.getObject("data_nascimento", LocalDate.class);
+            Pessoa pessoa = new Pessoa(id, nome, dataNascimento);
+            pessoas.add(pessoa);
+        }
+        return pessoas;
+    }
+    @Override
+    public Pessoa cadastrar(Pessoa pessoa) throws SQLException {
         String [] toReturn = {"id"};
         try (PreparedStatement comando = conexao.prepareStatement(
                 "INSERT INTO Pessoa(nome, data_nascimento) VALUES (?, ?)",
                 toReturn
         )
         ) {
+            var nome = pessoa.getNome();
+            var dataNascimento = pessoa.getDataNascimento();
             comando.setString(1, nome);
             comando.setObject(2, dataNascimento);
             comando.executeUpdate();
@@ -30,7 +46,8 @@ public class ModeloPessoa {
             return new Pessoa(id, nome, dataNascimento);
         }
     }
-    public void deletaPessoaPorNome(String nome) throws SQLException {
+    @Override
+    public void deletarPorNome(String nome) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
                 "DELETE FROM Pessoa WHERE nome = ?"
         )
@@ -39,22 +56,34 @@ public class ModeloPessoa {
             comando.executeUpdate();
         }
     }
-    public List<Pessoa> listaPessoas() throws SQLException{
-        List<Pessoa> pessoas = new ArrayList<>();
+    @Override
+    public List<Pessoa> listar() throws SQLException{
         Statement comando = conexao.createStatement();
         ResultSet resultadoQuery = comando.executeQuery(
                 "SELECT * FROM Pessoa"
         );
-        while (resultadoQuery.next()) {
-            int id = resultadoQuery.getInt("id");
-            String nome = resultadoQuery.getString("nome");
-            LocalDate dataNascimento = resultadoQuery.getObject("data_nascimento", LocalDate.class);
-            Pessoa pessoa = new Pessoa(id, nome, dataNascimento);
-            pessoas.add(pessoa);
-        }
-        return pessoas;
+        return criarPorResultSet(resultadoQuery);
     }
-    public Pessoa atualizaPessoa(Pessoa pessoa) throws SQLException {
+
+    @Override
+    public List<Pessoa> listarPorNome(Order order) throws SQLException {
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT * FROM Pessoa ORDER BY nome " + order
+        );
+        return criarPorResultSet(resultadoQuery);
+    }
+
+    @Override
+    public Pessoa retornarPorId(int id) throws SQLException {
+        Statement comando = conexao.createStatement();
+        ResultSet resultadoQuery = comando.executeQuery(
+                "SELECT * FROM Pessoa WHERE id = " + id
+        );
+        return criarPorResultSet(resultadoQuery).get(0);
+    }
+    @Override
+    public Pessoa atualizar(Pessoa pessoa) throws SQLException {
         try (PreparedStatement comando = conexao.prepareStatement(
                 "UPDATE Pessoa SET nome=?, data_nascimento=? WHERE id = ?"
         )
@@ -63,14 +92,8 @@ public class ModeloPessoa {
             comando.setObject(2, pessoa.getDataNascimento());
             comando.setInt(3, pessoa.getId());
             comando.executeUpdate();
-            return pessoa;
+            return retornarPorId(pessoa.getId());
         }
-    }
-    public List<Pessoa> atualizaPessoas(List<Pessoa> pessoas) throws SQLException {
-        for (Pessoa pessoa : pessoas) {
-            atualizaPessoa(pessoa);
-        }
-        return pessoas;
     }
     public Connection getConexao() {
         return conexao;

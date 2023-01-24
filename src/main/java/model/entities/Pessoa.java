@@ -1,20 +1,20 @@
 package model.entities;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
-public class Pessoa implements Entity {
+public class Pessoa implements Entidade {
     private int id;
     private String nome;
     private LocalDate dataNascimento;
-
-    public Pessoa(int id, String nome, LocalDate dataNascimento) {
-        this.id = id;
+    public Pessoa(){}
+    public Pessoa(String nome, LocalDate dataNascimento) {
         this.nome = nome;
         this.dataNascimento = dataNascimento;
     }
-
+    public Pessoa(int id, String nome, LocalDate dataNascimento) {
+        this(nome, dataNascimento);
+        this.id = id;
+    }
     public String getNome() {
         return nome;
     }
